@@ -1,0 +1,49 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "**/.husky": true,
+        "**/.nx": true,
+        "**/.run": true,
+        "**/coverage": true,
+        "**/dist": true,
+        "**/tmp": true,
+        "**/build": true,
+        "**/.cache": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/dist/*/**": true,
+        "**/coverage/*/**": true,
+        "**/tmp/*/**": true,
+        "**/.nx/*/**": true,
+        "**/.run/*/**": true
+    },
+    "todo-tree.general.tags": ["@todo:", "@fixme:", "@bug:"],
+    "todo-tree.general.statusBar": "top three",
+    "todo-tree.tree.groupedByTag": true,
+    "todo-tree.general.statusBarClickBehaviour": "reveal",
+    "todo-tree.general.tagGroups": {
+        "TODOs": ["@todo:"],
+        "BUGs": ["@fixme:", "@bug:"]
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODOs": {
+            "icon": "flame",
+            "foreground": "#ff9900"
+        },
+        "BUGs": {
+            "icon": "bug",
+            "foreground": "#ff0000"
+        }
+    }
+}

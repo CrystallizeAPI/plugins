@@ -1,0 +1,11 @@
+{
+    "ignorePatterns": ["node_modules", "dist", "build"],
+    "tabWidth": 4,
+    "semi": true,
+    "useTabs": false,
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 120
+}

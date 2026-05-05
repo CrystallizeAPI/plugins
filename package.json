@@ -1,0 +1,17 @@
+{
+    "name": "crystallize-plugins",
+    "private": true,
+    "workspaces": [
+        "plugins/*"
+    ],
+    "scripts": {
+        "format": "oxfmt .",
+        "format:check": "oxfmt --check ."
+    },
+    "devDependencies": {
+        "@crystallize/js-api-client": "^7.1.0",
+        "@types/bun": "^1.3.11",
+        "oxfmt": "^0.43.0",
+        "typescript": "^6"
+    }
+}
