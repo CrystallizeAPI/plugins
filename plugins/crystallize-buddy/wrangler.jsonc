@@ -1,0 +1,62 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "crystallize-buddy",
+    "compatibility_date": "2026-04-10",
+    "compatibility_flags": ["nodejs_compat"],
+    "main": "src/index.ts",
+    "workers_dev": true,
+    "preview_urls": false,
+    "placement": {
+        "mode": "smart",
+    },
+    "observability": {
+        "logs": {
+            "enabled": true,
+            "invocation_logs": false,
+        },
+    },
+    "vars": {
+        "ENVIRONMENT": "development",
+        "PLUGIN_IDENTIFIER": "com.crystallize.plugin.buddy",
+        "PLUGIN_URL": "http://localhost:5173",
+    },
+    "durable_objects": {
+        "bindings": [
+            {
+                "name": "TENANT_SSE_CHANNEL",
+                "class_name": "TenantSSEChannel",
+            },
+        ],
+    },
+    "migrations": [
+        {
+            "tag": "v1",
+            "new_sqlite_classes": ["TenantSSEChannel"],
+        },
+    ],
+    "env": {
+        "production": {
+            "workers_dev": true,
+            "preview_urls": false,
+            "vars": {
+                "ENVIRONMENT": "production",
+                "PLUGIN_IDENTIFIER": "com.crystallize.plugin.buddy",
+                "PLUGIN_URL": "https://crystallize-buddy-production.crystallize-edge.workers.dev",
+            },
+            "durable_objects": {
+                "bindings": [
+                    {
+                        "name": "TENANT_SSE_CHANNEL",
+                        "class_name": "TenantSSEChannel",
+                    },
+                ],
+            },
+            "migrations": [
+                {
+                    "tag": "v1",
+                    "new_sqlite_classes": ["TenantSSEChannel"],
+                },
+            ],
+        },
+    },
+}

@@ -6,8 +6,8 @@ See the [plugins documentation](https://crystallize.com/docs/developer/plugins) 
 
 ## Plugins
 
-| Plugin | Description |
-| --- | --- |
+| Plugin                               | Description                                                |
+| ------------------------------------ | ---------------------------------------------------------- |
 | [hello-world](./plugins/hello-world) | Reference plugin showing the minimal server-side contract. |
 
 ## Building your own plugin

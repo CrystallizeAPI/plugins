@@ -1,0 +1,271 @@
+.crystal-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 170%;
+    height: 170%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--c-glow) 55%, transparent) 0%,
+        color-mix(in srgb, var(--c-glow) 30%, transparent) 32%,
+        transparent 65%
+    );
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+    animation: crystal-glow-pulse 3.5s ease-in-out infinite;
+    filter: blur(32px);
+}
+
+@keyframes crystal-glow-pulse {
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+}
+
+.crystal-ground {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 22px;
+    background: radial-gradient(
+        ellipse,
+        color-mix(in srgb, var(--c-glow) 40%, transparent) 0%,
+        rgba(0, 0, 0, 0.45) 35%,
+        rgba(0, 0, 0, 0) 70%
+    );
+    border-radius: 50%;
+    transition:
+        transform 0.2s ease-out,
+        opacity 0.2s ease-out;
+    z-index: 1;
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.crystal-character svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 12px 32px color-mix(in srgb, var(--c-glow) 40%, transparent));
+}
+
+@keyframes crystal-bob {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+    50% {
+        transform: translateY(-14px) rotate(1deg);
+    }
+}
+
+.crystal-bob {
+    animation: crystal-bob 3.2s ease-in-out infinite;
+    transform-origin: center bottom;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes crystal-breathe {
+    0%,
+    100% {
+        transform: scale(1, 1);
+    }
+    50% {
+        transform: scale(1.02, 0.99);
+    }
+}
+
+.crystal-breathe {
+    animation: crystal-breathe 3.2s ease-in-out infinite;
+    transform-origin: center bottom;
+    transform-box: fill-box;
+}
+
+@keyframes crystal-jump {
+    0% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+    }
+    15% {
+        transform: translateY(0) scaleY(0.82) scaleX(1.12);
+    }
+    35% {
+        transform: translateY(-55%) scaleY(1.1) scaleX(0.94);
+    }
+    65% {
+        transform: translateY(-55%) scaleY(1.1) scaleX(0.94);
+    }
+    85% {
+        transform: translateY(0) scaleY(0.86) scaleX(1.1);
+    }
+    100% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+    }
+}
+
+.crystal-jumping {
+    animation: crystal-jump 0.95s ease-in-out;
+    transform-origin: center bottom;
+}
+
+@keyframes crystal-spin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(360deg) scale(0.85);
+    }
+    100% {
+        transform: rotate(720deg) scale(1);
+    }
+}
+
+.crystal-spinning {
+    animation: crystal-spin 1s ease-in-out;
+    transform-origin: center center;
+}
+
+@keyframes crystal-shine-flash {
+    0% {
+        filter: drop-shadow(0 12px 32px color-mix(in srgb, var(--c-glow) 40%, transparent)) brightness(1) saturate(1);
+        transform: scale(1);
+    }
+    30% {
+        filter: drop-shadow(0 0 28px color-mix(in srgb, var(--c-glow) 95%, transparent))
+            drop-shadow(0 0 70px color-mix(in srgb, var(--c-glow) 65%, transparent)) brightness(1.12) saturate(1.45);
+        transform: scale(1.08);
+    }
+    100% {
+        filter: drop-shadow(0 12px 32px color-mix(in srgb, var(--c-glow) 40%, transparent)) brightness(1) saturate(1);
+        transform: scale(1);
+    }
+}
+
+.crystal-shining {
+    animation: crystal-shine-flash 0.9s ease-out;
+}
+
+@keyframes crystal-dance {
+    0%,
+    100% {
+        transform: rotate(0) translateX(0);
+    }
+    25% {
+        transform: rotate(-9deg) translateX(-16px);
+    }
+    50% {
+        transform: rotate(0) translateX(0);
+    }
+    75% {
+        transform: rotate(9deg) translateX(16px);
+    }
+}
+
+.crystal-dancing {
+    animation: crystal-dance 0.7s ease-in-out 3;
+    transform-origin: center bottom;
+}
+
+.crystal-eyelid {
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: scaleY(0);
+}
+
+.crystal-blink .crystal-eyelid {
+    animation: crystal-blink-frames 0.18s ease-in-out;
+}
+
+@keyframes crystal-blink-frames {
+    0%,
+    100% {
+        transform: scaleY(0);
+    }
+    40%,
+    60% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes crystal-squish {
+    0% {
+        transform: scale(1, 1);
+    }
+    30% {
+        transform: scale(1.14, 0.84);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+.crystal-squish {
+    animation: crystal-squish 0.4s ease-out;
+    transform-origin: center bottom;
+    transform-box: fill-box;
+}
+
+.crystal-sparkle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+    color: var(--c-glow);
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--c-glow) 70%, transparent));
+}
+
+@keyframes crystal-sparkle-anim {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(0);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.1) rotate(90deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.2) rotate(360deg) translate(var(--dx), var(--dy));
+    }
+}
+
+.crystal-sparkle.crystal-go {
+    animation: crystal-sparkle-anim 1s ease-out forwards;
+}
+
+@keyframes crystal-ambient-float {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.3);
+    }
+    20% {
+        opacity: 0.85;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-90px) scale(1);
+    }
+}
+
+.crystal-ambient-sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    color: var(--c-glow);
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--c-glow) 70%, transparent));
+    animation: crystal-ambient-float 2.6s ease-out forwards;
+}

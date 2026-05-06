@@ -1,0 +1,20 @@
+# Private RSA JWK from `crystallize plugin keygen` (the contents of private.jwk.json on a single line)
+# DO NOT commit .dev.vars
+PLUGIN_PRIVATE_JWK='{"kty":"RSA","kid":"private","use":"enc","alg":"RSA-OAEP-256","n":"...","e":"AQAB","d":"...","p":"...","q":"...","dp":"...","dq":"...","qi":"..."}'
+
+# Crystallize access token used in dev only.
+# `vite/dev-payload.ts` reads these and inlines them into the locally-minted
+# `backendToken` as `dev-payload://accessTokenId:…,accessTokenSecret:…`.
+# `crystallize-client-builder.ts` detects the `dev-payload://` prefix and
+# builds the client with these credentials instead of a real backendToken.
+# Leave unset in production — the worker never reads them directly.
+# CRYSTALLIZE_ACCESS_TOKEN_ID=''
+# CRYSTALLIZE_ACCESS_TOKEN_SECRET=''
+
+# Tenant the dev-payload plugin (vite/dev-payload.ts) "populates" into the locally-minted envelope.
+# CRYSTALLIZE_TENANT_ID    → injected as `envelope.tenantId` (needed for some Crystallize APIs).
+# CRYSTALLIZE_TENANT_IDENTIFIER → overrides the path-derived `:tenant` segment for the
+#                                 minted envelope AND the proxied sub-request URL, so you
+#                                 don't have to retype it on every visit.
+# CRYSTALLIZE_SIGNING_SECRET    → envelope.signatureSecret  (HMAC for webhook verification)
+# CRYSTALLIZE_STATIC_AUTH_TOKEN → envelope.staticAuthToken  (long-lived bearer for Discovery / non-iframe contexts)

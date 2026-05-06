@@ -1,0 +1,23 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "react"],
+    "categories": {
+        "correctness": "error",
+        "suspicious": "warn",
+        "perf": "warn"
+    },
+    "rules": {
+        "no-debugger": "off",
+        "no-unused-vars": [
+            "error",
+            {
+                "caughtErrorsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "argsIgnorePattern": "^_"
+            }
+        ],
+        "no-await-in-loop": "off",
+        "react/react-in-jsx-scope": "off"
+    },
+    "ignorePatterns": ["worker-configuration.d.ts", "node_modules/", "dist/", "src/ui/components/ui/"]
+}

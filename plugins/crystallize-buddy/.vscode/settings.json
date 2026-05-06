@@ -1,0 +1,36 @@
+{
+    "files.associations": {
+        "wrangler.json": "jsonc",
+        "dev-payload.config.jsonc.dist": "jsonc",
+        "*.css": "tailwindcss"
+    },
+    "editor.formatOnSave": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "**/.husky": true,
+        "**/.nx": true,
+        "**/.run": true,
+        "**/coverage": true,
+        "**/dist": true,
+        "**/tmp": true,
+        "**/build": true,
+        "**/.wrangler": true,
+        "**/.cache": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/dist/*/**": true,
+        "**/coverage/*/**": true,
+        "**/tmp/*/**": true,
+        "**/.nx/*/**": true,
+        "**/.run/*/**": true
+    }
+}
