@@ -11,6 +11,7 @@
     "dependencies": {
         "@base-ui/react": "^1.4.1",
         "@crystallize/js-api-client": "^7.2.0",
+        "@crystallize/plugin-signal": "^0.2.0",
         "awilix": "^13.0.3",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",

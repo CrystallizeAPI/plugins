@@ -1,7 +1,8 @@
-import { useRef, useState } from "hono/jsx";
+import { useRef, useState, useEffect } from "hono/jsx";
 import { IslandRoot } from "virtual:islands/runtime";
 import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
 import type { PaletteName } from "../components/character/palettes";
+import { createChannel, createWindowTransport } from '@crystallize/plugin-signal';
 
 export const DashboardIslandId = "dashboard-island";
 
@@ -65,6 +66,14 @@ function DashboardIslandBody({ palette, payload, verifyUrl }: DashboardIslandPro
         }
     };
 
+
+    useEffect(() => {
+        const channel = createChannel({
+            transport: createWindowTransport(),
+        });
+        channel.notify('ready', undefined);
+        // channel.notify('notifyHeight', { height: 100 });
+    }, []);
     return (
         <section class="flex flex-1 flex-col items-center justify-center gap-10">
             <div class="flex items-center gap-8">
