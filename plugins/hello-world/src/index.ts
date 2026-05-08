@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { renderDashboard } from './page.ts';
 import { createClient, createPluginPayloadDecrypter } from '@crystallize/js-api-client';
 
@@ -10,12 +10,20 @@ const decrypter = createPluginPayloadDecrypter({
     },
 });
 
+const getDecodedPayload = async (c:Context) => {
+    const body = await c.req.parseBody();
+    if (typeof body !== 'object' || body === null || typeof body.payload !== 'string') {
+        throw new Error('Invalid body');
+    }
+    const payload = body.payload;
+    return await decrypter(payload);
+}
+
 const app = new Hono();
 app.post('/:tenantIdentifier/post-install', async (c) => {
     const tenantIdentifier = c.req.param('tenantIdentifier');
     try {
-        const payload = await c.req.text();
-        const decoded = await decrypter(payload);
+        const decoded = await getDecodedPayload(c)
         if (decoded.envelope?.tenantIdentifier !== tenantIdentifier) {
             return c.text('tenant mismatch', 403);
         }
@@ -29,12 +37,7 @@ app.post('/:tenantIdentifier/post-install', async (c) => {
 app.post('/:tenantIdentifier/endpoint', async (c) => {
     const tenantIdentifier = c.req.param('tenantIdentifier');
     try {
-        const body = await c.req.parseBody();
-        if (typeof body !== 'object' || body === null || typeof body.payload !== 'string') {
-            return c.text('invalid body', 400);
-        }
-        const payload = body.payload;
-        const decoded = await decrypter(payload);
+        const decoded = await getDecodedPayload(c)
         if (decoded.envelope?.tenantIdentifier !== tenantIdentifier) {
             return c.text('tenant mismatch', 403);
         }

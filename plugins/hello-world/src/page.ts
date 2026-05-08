@@ -1,3 +1,5 @@
+import type { DecryptedPluginPayload } from "@crystallize/js-api-client";
+
 function page(title: string, body: string): string {
     return `<!DOCTYPE html>
 <html lang="en">
@@ -57,27 +59,27 @@ function page(title: string, body: string): string {
 </html>`;
 }
 
-export function renderDashboard(decoded: any, data: any): string {
+export function renderDashboard(decoded: DecryptedPluginPayload, data: any): string {
     return page(
         'Hello World',
         `
         <h1>Hello World</h1>
         <div class="card">
             <h2>Tenant</h2>
-            <p><code>${decoded.envelope.tenantIdentifier}</code></p>
+            <p><code>${decoded.envelope?.tenantIdentifier} / ${decoded.envelope?.tenantId}</code></p>
         </div>
         <div class="card">
             <p><span class="badge">Server</span> loaded via POST with an encrypted payload</p>
-            <p><span class="badge">Payload Signature</span> ${decoded.signature.verified ? 'VERIFIED' : 'NOT_VERIFIED'}.</p>
-            <p><span class="badge">Token Signature</span> ${decoded.backendToken.verified ? 'VERIFIED' : 'NOT_VERIFIED'}.</p>
+            <p><span class="badge">Payload Signature</span> ${decoded.signatureStatus.verified ? 'VERIFIED' : 'NOT_VERIFIED'}.</p>
+            <p><span class="badge">Token Signature</span> ${decoded.backendTokenStatus?.verified ? 'VERIFIED' : 'NOT_VERIFIED'}.</p>
         </div>
         <div class="card">
             <h2>Claims</h2>
-            <pre>${JSON.stringify(decoded.backendToken.claims, null, 2)}</pre>
+            <pre>${JSON.stringify(decoded.backendTokenStatus?.claims, null, 2)}</pre>
         </div>
         <div class="card">
             <h2>Context</h2>
-            <pre>${JSON.stringify(decoded.envelope.entityContext, null, 2)}</pre>
+            <pre>${JSON.stringify(decoded.envelope?.entityContext, null, 2)}</pre>
         </div>
         <div class="card">
             <h2>Data</h2>
