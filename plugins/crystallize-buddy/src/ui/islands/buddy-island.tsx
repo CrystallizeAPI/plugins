@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "hono/jsx";
 import { IslandRoot } from "virtual:islands/runtime";
 import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
+import type { PaletteName } from "../components/character/palettes";
 
 type BulkTaskCounts = {
     complete: number;
@@ -10,6 +11,7 @@ type BulkTaskCounts = {
 };
 
 type BuddyIslandProps = {
+    palette: PaletteName;
     subscribeUrl?: string;
     bulkTaskCounts: BulkTaskCounts;
 };
@@ -54,7 +56,7 @@ function formatActionEnvelope(envelope: SSEActionEnvelope): { label: string; det
 }
 
 export function BuddyIsland(props: BuddyIslandProps) {
-    const { subscribeUrl, bulkTaskCounts } = props;
+    const { palette, subscribeUrl, bulkTaskCounts } = props;
     const apiRef = useRef<CrystalApi | null>(null);
     const [messages, setMessages] = useState<BuddyMessage[]>([]);
     const idRef = useRef(0);
@@ -95,8 +97,6 @@ export function BuddyIsland(props: BuddyIslandProps) {
             source.close();
         };
     }, [subscribeUrl]);
-
-    const palette = "orange";
 
     return (
         <IslandRoot id={BuddyIslandId} props={props} className="flex min-h-0 flex-1 flex-col">

@@ -1,12 +1,17 @@
 import { useRequestContext } from "hono/jsx-renderer";
 import type { DecodedPayloadAppContext } from "@/contracts/app-context";
 import { BuddyIsland } from "@/ui/islands/buddy-island";
+import { palettes, type PaletteName } from "@/ui/components/character/palettes";
 import { PluginLayout } from "../layouts/plugin-layout";
+
+const isPaletteName = (value: unknown): value is PaletteName => typeof value === "string" && value in palettes;
 
 export async function Widget() {
     const c = useRequestContext<DecodedPayloadAppContext>();
     const tenantIdentifier = c.get("tenantIdentifier");
     const subscribeUrl = `/${tenantIdentifier}/api/sse/subscribe`;
+    const configuration = (c.get("decodedPayload").envelope?.configuration ?? {}) as Record<string, unknown>;
+    const palette: PaletteName = isPaletteName(configuration.color) ? configuration.color : "orange";
     const crystallizeClient = c.get("crystallizeClient");
     const bCounts = await crystallizeClient.nextPimApi<{
         complete: { totalCount: number };
@@ -25,7 +30,7 @@ export async function Widget() {
     return (
         <PluginLayout bare>
             <div className="flex min-h-0 flex-1 flex-col gap-3">
-                <BuddyIsland subscribeUrl={subscribeUrl} bulkTaskCounts={bulkTaskCounts} />
+                <BuddyIsland palette={palette} subscribeUrl={subscribeUrl} bulkTaskCounts={bulkTaskCounts} />
                 <div className="flex justify-end">
                     <a
                         href={`/${tenantIdentifier}/doctor`}
