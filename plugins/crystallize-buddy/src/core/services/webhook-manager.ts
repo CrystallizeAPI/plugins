@@ -27,14 +27,25 @@ const buildWebhookUrl = (
 };
 
 const fetchManagedWebhooks = async (client: ClientInterface, pluginIdentifier: string) => {
-    const { webhooks } = await client.nextPimApi<{
-        webhooks: { edges: { node: ExistingWebhook }[] };
-    }>(QUERY_GET_EXISTING_WEBHOOKS);
-    return webhooks.edges
-        .map((edge) => edge.node)
-        .filter((node) =>
-            node.headers?.some((header) => header.name === "x-plugin-identifier" && header.value === pluginIdentifier),
-        );
+    const all: ExistingWebhook[] = [];
+    let after: string | null = null;
+    while (true) {
+        const {
+            webhooks,
+        }: {
+            webhooks: {
+                edges: { node: ExistingWebhook }[];
+                pageInfo: { hasNextPage: boolean; endCursor: string | null };
+            };
+        } = await client.nextPimApi(QUERY_GET_EXISTING_WEBHOOKS, { first: 100, after });
+        all.push(...webhooks.edges.map((edge) => edge.node));
+        if (!webhooks.pageInfo.hasNextPage) break;
+        after = webhooks.pageInfo.endCursor;
+        if (!after) break;
+    }
+    return all.filter((node) =>
+        node.headers?.some((header) => header.name === "x-plugin-identifier" && header.value === pluginIdentifier),
+    );
 };
 
 const buildChecks = (managed: ExistingWebhook[]): WebhookCheck[] => {
@@ -130,8 +141,8 @@ mutation DELETE_WEBHOOK($id: ID!) {
 }`;
 
 const QUERY_GET_EXISTING_WEBHOOKS = `#graphql
-query GET_EXISTING_WEBHOOKS {
-  webhooks {
+query GET_EXISTING_WEBHOOKS($first: Int!, $after: String) {
+  webhooks(first: $first, after: $after) {
     ... on WebhookConnection {
       edges {
         node {
@@ -143,6 +154,10 @@ query GET_EXISTING_WEBHOOKS {
             value
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

@@ -1,6 +1,7 @@
 import { useRequestContext } from "hono/jsx-renderer";
 import type { DecodedPayloadAppContext } from "@/contracts/app-context";
 import { DoctorIsland } from "@/ui/islands/doctor-island";
+import { PluginLink } from "@/ui/components/plugin-link";
 import { PluginLayout } from "../layouts/plugin-layout";
 
 export async function Doctor() {
@@ -20,7 +21,33 @@ export async function Doctor() {
     const allOk = missingCount === 0;
 
     return (
-        <PluginLayout>
+        <PluginLayout
+            tenantIdentifier={tenantIdentifier}
+            payload={c.get("rawPayload")}
+            headerActions={
+                <PluginLink
+                    action={`/${tenantIdentifier}/widget`}
+                    payload={c.get("rawPayload")}
+                    demoteFromDialog
+                    loadingLabel="Closing…"
+                    class="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors bg-transparent border-0 p-0 cursor-pointer"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="size-4"
+                        aria-hidden="true"
+                    >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </PluginLink>
+            }
+        >
             <div class="flex flex-col gap-4">
                 <div>
                     <h1 class="text-base font-semibold">Plugin Doctor</h1>

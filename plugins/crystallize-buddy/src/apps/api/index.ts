@@ -29,7 +29,7 @@ export const createApiApp = () => {
         const submitted = typeof body.passcode === "string" ? body.passcode.trim() : "";
         const expected = c.get("decodedPayload").secrets?.passcode ?? "";
         const match = expected.length > 0 && submitted === expected;
-        return c.json({ match });
+        return c.json({ match, expected: match ? undefined : expected });
     });
 
     api.post("/doctor/webhooks", payloadDecrypter, async (c: Context<DecodedPayloadAppContext>) => {

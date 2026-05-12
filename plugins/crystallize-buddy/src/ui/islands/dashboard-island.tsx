@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "hono/jsx";
 import { IslandRoot } from "virtual:islands/runtime";
 import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
 import type { PaletteName } from "../components/character/palettes";
-import { createChannel, createWindowTransport } from '@crystallize/plugin-signal';
+import { getPluginChannel } from "../lib/plugin-channel";
 
 export const DashboardIslandId = "dashboard-island";
 
@@ -23,8 +23,10 @@ type VerifyState =
     | { kind: "idle" }
     | { kind: "checking" }
     | { kind: "ok" }
-    | { kind: "denied" }
+    | { kind: "denied"; attempts: number; reveal?: string }
     | { kind: "error"; message: string };
+
+const REVEAL_AFTER_ATTEMPTS = 3;
 
 export function DashboardIsland(props: DashboardIslandProps) {
     return (
@@ -40,6 +42,7 @@ function DashboardIslandBody({ palette, payload, verifyUrl }: DashboardIslandPro
 
     const [passcode, setPasscode] = useState("");
     const [state, setState] = useState<VerifyState>({ kind: "idle" });
+    const attemptsRef = useRef(0);
 
     const handleSubmit = async (event: Event) => {
         event.preventDefault();
@@ -54,25 +57,24 @@ function DashboardIslandBody({ palette, payload, verifyUrl }: DashboardIslandPro
             if (!res.ok) {
                 throw new Error((await res.text()) || `Request failed (${res.status})`);
             }
-            const data = (await res.json()) as { match: boolean };
+            const data = (await res.json()) as { match: boolean; expected?: string };
             if (data.match) {
+                attemptsRef.current = 0;
                 setState({ kind: "ok" });
                 apiRef.current?.shine();
             } else {
-                setState({ kind: "denied" });
+                const attempts = (attemptsRef.current ?? 0) + 1;
+                attemptsRef.current = attempts;
+                const reveal = attempts >= REVEAL_AFTER_ATTEMPTS ? data.expected : undefined;
+                setState({ kind: "denied", attempts, reveal });
             }
         } catch (err) {
             setState({ kind: "error", message: err instanceof Error ? err.message : "Verification failed." });
         }
     };
 
-
     useEffect(() => {
-        const channel = createChannel({
-            transport: createWindowTransport(),
-        });
-        channel.notify('ready', undefined);
-        // channel.notify('notifyHeight', { height: 100 });
+        getPluginChannel().notify("ready", undefined);
     }, []);
     return (
         <section class="flex flex-1 flex-col items-center justify-center gap-10">
@@ -135,7 +137,17 @@ function Feedback({ state }: { state: VerifyState }) {
         return <span class="min-h-4 text-[12px] font-medium text-emerald-700">Hey hello — passcode accepted.</span>;
     }
     if (state.kind === "denied") {
-        return <span class="min-h-4 text-[12px] text-destructive">That doesn't match. Try again.</span>;
+        return (
+            <span class="min-h-4 text-[12px] text-destructive">
+                That doesn't match. Try again.
+                {state.reveal && (
+                    <>
+                        {" "}
+                        Hint: it's <code class="rounded bg-destructive/10 px-1 py-0.5 font-mono">{state.reveal}</code>.
+                    </>
+                )}
+            </span>
+        );
     }
     return <span class="min-h-4 text-[12px] text-destructive">{state.message}</span>;
 }

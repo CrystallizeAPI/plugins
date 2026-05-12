@@ -28,19 +28,15 @@ export async function Widget() {
     };
     console.debug("[widget] initial bulk task counts:", bulkTaskCounts);
     return (
-        <PluginLayout bare>
+        <PluginLayout bare tenantIdentifier={tenantIdentifier} payload={c.get("rawPayload")}>
             <div className="flex min-h-0 flex-1 flex-col gap-3">
-                <BuddyIsland palette={palette} subscribeUrl={subscribeUrl} bulkTaskCounts={bulkTaskCounts} />
-                <div className="flex justify-end">
-                    <a
-                        href={`/${tenantIdentifier}/doctor`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[11px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
-                    >
-                        Open Doctor →
-                    </a>
-                </div>
+                <BuddyIsland
+                    palette={palette}
+                    subscribeUrl={subscribeUrl}
+                    bulkTaskCounts={bulkTaskCounts}
+                    tenantIdentifier={tenantIdentifier}
+                    payload={c.get("rawPayload")}
+                />
             </div>
         </PluginLayout>
     );

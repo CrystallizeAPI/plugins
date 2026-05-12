@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "hono/jsx";
 import { IslandRoot } from "virtual:islands/runtime";
 import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
 import type { PaletteName } from "../components/character/palettes";
+import { PluginLink } from "../components/plugin-link";
+import { getPluginChannel } from "../lib/plugin-channel";
 
 type BulkTaskCounts = {
     complete: number;
@@ -13,6 +15,8 @@ type BulkTaskCounts = {
 type BuddyIslandProps = {
     palette: PaletteName;
     subscribeUrl?: string;
+    tenantIdentifier: string;
+    payload: string;
     bulkTaskCounts: BulkTaskCounts;
 };
 
@@ -60,6 +64,9 @@ export function BuddyIsland(props: BuddyIslandProps) {
     const apiRef = useRef<CrystalApi | null>(null);
     const [messages, setMessages] = useState<BuddyMessage[]>([]);
     const idRef = useRef(0);
+    useEffect(() => {
+        getPluginChannel().notify("ready", undefined);
+    }, []);
 
     useEffect(() => {
         if (!subscribeUrl) return;
@@ -112,6 +119,17 @@ export function BuddyIsland(props: BuddyIslandProps) {
                     <SectionLabel>Recent events</SectionLabel>
                     <EventFeed messages={messages} />
                 </section>
+            </div>
+            <div className="flex justify-end">
+                <PluginLink
+                    action={`/${props.tenantIdentifier}/doctor`}
+                    payload={props.payload}
+                    promoteToDialog={{ width: 800, height: 600 }}
+                    loadingLabel="Opening Doctor…"
+                    class="text-[11px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline bg-transparent border-0 p-0 cursor-pointer disabled:cursor-wait inline-flex items-center"
+                >
+                    Open Doctor →
+                </PluginLink>
             </div>
         </IslandRoot>
     );
