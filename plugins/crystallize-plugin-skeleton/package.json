@@ -1,6 +1,9 @@
 {
-    "name": "crystallize-plugin-skeleton",
+    "name": "{{plugin_identifier}}-for-crystallize",
     "version": "1.0.0",
+    "description": "{{plugin_name}} — a Crystallize plugin",
+    "author": "{{author_name}}",
+    "homepage": "{{vendor_url}}",
     "type": "module",
     "scripts": {
         "dev": "vite",

@@ -1,4 +1,4 @@
-# crystallize-plugin-skeleton
+# {{plugin_name}}
 
 Empty skeleton for building a Crystallize plugin on a Node.js server.
 
