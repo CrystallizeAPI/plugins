@@ -1,4 +1,4 @@
-import type { JSX } from "hono/jsx/jsx-runtime";
+import type { JSX } from 'hono/jsx/jsx-runtime';
 
 export type PromoteToDialogOption = boolean | { width?: number; height?: number };
 
@@ -23,20 +23,20 @@ export function PluginLink({
 }: PluginLinkProps) {
     const dataAttrs: Record<string, string> = {};
     if (promoteToDialog) {
-        dataAttrs["data-channel-action"] = "promote";
-        if (typeof promoteToDialog === "object") {
-            if (typeof promoteToDialog.width === "number") {
-                dataAttrs["data-channel-width"] = String(promoteToDialog.width);
+        dataAttrs['data-channel-action'] = 'promote';
+        if (typeof promoteToDialog === 'object') {
+            if (typeof promoteToDialog.width === 'number') {
+                dataAttrs['data-channel-width'] = String(promoteToDialog.width);
             }
-            if (typeof promoteToDialog.height === "number") {
-                dataAttrs["data-channel-height"] = String(promoteToDialog.height);
+            if (typeof promoteToDialog.height === 'number') {
+                dataAttrs['data-channel-height'] = String(promoteToDialog.height);
             }
         }
     } else if (demoteFromDialog) {
-        dataAttrs["data-channel-action"] = "demote";
+        dataAttrs['data-channel-action'] = 'demote';
     }
-    if (loadingLabel && dataAttrs["data-channel-action"]) {
-        dataAttrs["data-channel-loading-label"] = loadingLabel;
+    if (loadingLabel && dataAttrs['data-channel-action']) {
+        dataAttrs['data-channel-loading-label'] = loadingLabel;
     }
 
     return (

@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 @plugin '@tailwindcss/typography';
 
 @theme inline {
@@ -72,12 +72,12 @@
     html,
     body {
         font-family:
-            "Roboto",
+            'Roboto',
             ui-sans-serif,
             system-ui,
             -apple-system,
-            "Segoe UI",
-            "Helvetica Neue",
+            'Segoe UI',
+            'Helvetica Neue',
             Arial,
             sans-serif;
     }

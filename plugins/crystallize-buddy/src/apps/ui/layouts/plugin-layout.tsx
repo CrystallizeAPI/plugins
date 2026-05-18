@@ -1,6 +1,6 @@
-import type { JSX } from "hono/jsx/jsx-runtime";
-import { PluginLink } from "@/ui/components/plugin-link";
-import { PluginShellIsland } from "@/ui/islands/plugin-shell-island";
+import type { JSX } from 'hono/jsx/jsx-runtime';
+import { PluginLink } from '@/ui/components/plugin-link';
+import { PluginShellIsland } from '@/ui/islands/plugin-shell-island';
 
 type PluginLayoutBase = {
     children: JSX.Element | JSX.Element[];
@@ -15,7 +15,7 @@ export function PluginLayout(props: PluginLayoutProps) {
     const { children, headerActions } = props;
     return (
         <div
-            className={`flex min-h-screen w-full flex-col text-foreground ${props.bare ? "bg-transparent" : "bg-background"}`}
+            className={`flex min-h-screen w-full flex-col text-foreground ${props.bare ? 'bg-transparent' : 'bg-background'}`}
         >
             <PluginShellIsland />
             {!props.bare && (

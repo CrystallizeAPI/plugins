@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "hono/jsx";
-import { IslandRoot } from "virtual:islands/runtime";
-import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
-import type { PaletteName } from "../components/character/palettes";
-import { PluginLink } from "../components/plugin-link";
-import { getPluginChannel } from "../lib/plugin-channel";
+import { useEffect, useRef, useState } from 'hono/jsx';
+import { IslandRoot } from 'virtual:islands/runtime';
+import { CrystalCharacter, type CrystalAction, type CrystalApi } from '../components/character/character';
+import type { PaletteName } from '../components/character/palettes';
+import { PluginLink } from '../components/plugin-link';
+import { getPluginChannel } from '../lib/plugin-channel';
 
 type BulkTaskCounts = {
     complete: number;
@@ -20,15 +20,15 @@ type BuddyIslandProps = {
     bulkTaskCounts: BulkTaskCounts;
 };
 
-export const BuddyIslandId = "buddy-island";
+export const BuddyIslandId = 'buddy-island';
 
 const MAX_MESSAGES = 30;
-const ACTION_POOL: CrystalAction[] = ["jump", "spin", "dance"];
+const ACTION_POOL: CrystalAction[] = ['jump', 'spin', 'dance'];
 
 type BuddyMessage = {
     id: number;
     at: number;
-    kind: "action";
+    kind: 'action';
     label: string;
     detail?: string;
 };
@@ -40,20 +40,20 @@ type SSEActionEnvelope = {
 };
 
 function formatActionEnvelope(envelope: SSEActionEnvelope): { label: string; detail?: string } {
-    const concern = envelope.concern ?? "event";
-    const action = envelope.action ?? "?";
+    const concern = envelope.concern ?? 'event';
+    const action = envelope.action ?? '?';
     const label = `${concern}/${action}`;
     const payload = envelope.payload;
     let detail: string | undefined;
-    if (payload && typeof payload === "object") {
+    if (payload && typeof payload === 'object') {
         const p = payload as Record<string, unknown>;
         const candidate =
-            (typeof p.id === "string" && p.id) ||
-            (typeof p.path === "string" && p.path) ||
-            (typeof p.itemPath === "string" && p.itemPath);
+            (typeof p.id === 'string' && p.id) ||
+            (typeof p.path === 'string' && p.path) ||
+            (typeof p.itemPath === 'string' && p.itemPath);
         if (candidate) detail = String(candidate);
-        if (!detail && typeof p.type === "string") detail = p.type;
-    } else if (typeof payload === "string") {
+        if (!detail && typeof p.type === 'string') detail = p.type;
+    } else if (typeof payload === 'string') {
         detail = payload;
     }
     return { label, detail };
@@ -65,13 +65,13 @@ export function BuddyIsland(props: BuddyIslandProps) {
     const [messages, setMessages] = useState<BuddyMessage[]>([]);
     const idRef = useRef(0);
     useEffect(() => {
-        getPluginChannel().notify("ready", undefined);
+        getPluginChannel().notify('ready', undefined);
     }, []);
 
     useEffect(() => {
         if (!subscribeUrl) return;
 
-        const pushMessage = (entry: Omit<BuddyMessage, "id" | "at">) => {
+        const pushMessage = (entry: Omit<BuddyMessage, 'id' | 'at'>) => {
             const id = (idRef.current ?? 0) + 1;
             idRef.current = id;
             setMessages((prev) => [{ id, at: Date.now(), ...entry }, ...prev].slice(0, MAX_MESSAGES));
@@ -82,25 +82,25 @@ export function BuddyIsland(props: BuddyIslandProps) {
             try {
                 const envelope = JSON.parse(event.data) as SSEActionEnvelope;
                 const { label, detail } = formatActionEnvelope(envelope);
-                pushMessage({ kind: "action", label, detail });
+                pushMessage({ kind: 'action', label, detail });
                 const action = ACTION_POOL[Math.floor(Math.random() * ACTION_POOL.length)];
                 apiRef.current?.[action]();
             } catch (err) {
-                console.error("[buddy] failed to parse action event", err);
+                console.error('[buddy] failed to parse action event', err);
             }
         };
         const onManagement = (event: MessageEvent) => {
             const what = String(event.data);
-            if (what === "connected") {
+            if (what === 'connected') {
                 apiRef.current?.shine();
             }
         };
-        source.addEventListener("action", onAction);
-        source.addEventListener("management", onManagement);
-        source.onerror = (err) => console.warn("[buddy] sse error", err);
+        source.addEventListener('action', onAction);
+        source.addEventListener('management', onManagement);
+        source.onerror = (err) => console.warn('[buddy] sse error', err);
         return () => {
-            source.removeEventListener("action", onAction);
-            source.removeEventListener("management", onManagement);
+            source.removeEventListener('action', onAction);
+            source.removeEventListener('management', onManagement);
             source.close();
         };
     }, [subscribeUrl]);
@@ -152,29 +152,29 @@ function BulkTaskStrip({ counts }: { counts: BulkTaskCounts }) {
     );
 }
 
-type ChipTone = "success" | "info" | "warn" | "error";
+type ChipTone = 'success' | 'info' | 'warn' | 'error';
 
 const TONE_CLASSES: Record<ChipTone, { active: string; muted: string }> = {
     success: {
-        active: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700",
-        muted: "border-border/60 bg-muted/40 text-muted-foreground",
+        active: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700',
+        muted: 'border-border/60 bg-muted/40 text-muted-foreground',
     },
     info: {
-        active: "border-sky-500/40 bg-sky-500/10 text-sky-700",
-        muted: "border-border/60 bg-muted/40 text-muted-foreground",
+        active: 'border-sky-500/40 bg-sky-500/10 text-sky-700',
+        muted: 'border-border/60 bg-muted/40 text-muted-foreground',
     },
     warn: {
-        active: "border-amber-500/50 bg-amber-500/10 text-amber-700",
-        muted: "border-border/60 bg-muted/40 text-muted-foreground",
+        active: 'border-amber-500/50 bg-amber-500/10 text-amber-700',
+        muted: 'border-border/60 bg-muted/40 text-muted-foreground',
     },
     error: {
-        active: "border-destructive/50 bg-destructive/10 text-destructive",
-        muted: "border-border/60 bg-muted/40 text-muted-foreground",
+        active: 'border-destructive/50 bg-destructive/10 text-destructive',
+        muted: 'border-border/60 bg-muted/40 text-muted-foreground',
     },
 };
 
 function Chip({ tone, symbol, label, value }: { tone: ChipTone; symbol: string; label: string; value: number }) {
-    const classes = TONE_CLASSES[tone][value === 0 ? "muted" : "active"];
+    const classes = TONE_CLASSES[tone][value === 0 ? 'muted' : 'active'];
     return (
         <span
             class={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium leading-none tabular-nums ${classes}`}
@@ -216,8 +216,8 @@ function EventFeed({ messages }: { messages: BuddyMessage[] }) {
 
 function formatTime(ts: number): string {
     const d = new Date(ts);
-    const hh = String(d.getHours()).padStart(2, "0");
-    const mm = String(d.getMinutes()).padStart(2, "0");
-    const ss = String(d.getSeconds()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
     return `${hh}:${mm}:${ss}`;
 }

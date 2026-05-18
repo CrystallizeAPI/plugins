@@ -1,4 +1,4 @@
-import { DurableObject } from "cloudflare:workers";
+import { DurableObject } from 'cloudflare:workers';
 
 type SSEMessage = {
     id?: string;
@@ -6,7 +6,7 @@ type SSEMessage = {
     data: string;
 };
 
-const STATE_KEY = "installation-state";
+const STATE_KEY = 'installation-state';
 
 type StoredInstallationState = {
     configuration: Record<string, unknown>;
@@ -15,13 +15,13 @@ type StoredInstallationState = {
 };
 
 const formatSSEMessage = ({ id, event, data }: SSEMessage): string => {
-    let message = "";
+    let message = '';
     if (id) message += `id: ${id}\n`;
     if (event) message += `event: ${event}\n`;
-    for (const line of data.split("\n")) {
+    for (const line of data.split('\n')) {
         message += `data: ${line}\n`;
     }
-    message += "\n";
+    message += '\n';
     return message;
 };
 
@@ -31,35 +31,35 @@ export class TenantSSEChannel extends DurableObject<CloudflareBindings> {
     async fetch(request: Request): Promise<Response> {
         const url = new URL(request.url);
         switch (url.pathname) {
-            case "/subscribe":
+            case '/subscribe':
                 return this.handleSubscribe();
-            case "/push":
+            case '/push':
                 return this.handlePush(request);
-            case "/close":
+            case '/close':
                 return this.handleClose();
-            case "/state":
-                if (request.method === "GET") return this.handleGetState();
-                if (request.method === "POST") return this.handleSetState(request);
-                return new Response("method not allowed", { status: 405 });
-            case "/health":
+            case '/state':
+                if (request.method === 'GET') return this.handleGetState();
+                if (request.method === 'POST') return this.handleSetState(request);
+                return new Response('method not allowed', { status: 405 });
+            case '/health':
                 return Response.json({
-                    status: "pass",
+                    status: 'pass',
                     ts: Date.now(),
                     subscribers: this.subscribers.size,
                 });
             default:
-                return new Response("Not found", { status: 404 });
+                return new Response('Not found', { status: 404 });
         }
     }
 
     private async handleGetState(): Promise<Response> {
         const state = await this.ctx.storage.get<StoredInstallationState>(STATE_KEY);
-        if (!state) return new Response("not found", { status: 404 });
+        if (!state) return new Response('not found', { status: 404 });
         return Response.json(state);
     }
 
     private async handleSetState(request: Request): Promise<Response> {
-        const body = await request.json<Pick<StoredInstallationState, "configuration" | "signatureSecret">>();
+        const body = await request.json<Pick<StoredInstallationState, 'configuration' | 'signatureSecret'>>();
         const next: StoredInstallationState = {
             configuration: body.configuration ?? {},
             signatureSecret: body.signatureSecret ?? null,
@@ -82,14 +82,14 @@ export class TenantSSEChannel extends DurableObject<CloudflareBindings> {
                     encoder.encode(
                         formatSSEMessage({
                             id: new Date().toISOString(),
-                            event: "management",
-                            data: "connected",
+                            event: 'management',
+                            data: 'connected',
                         }),
                     ),
                 );
                 intervalId = setInterval(() => {
                     try {
-                        controller.enqueue(encoder.encode(formatSSEMessage({ event: "management", data: "ping" })));
+                        controller.enqueue(encoder.encode(formatSSEMessage({ event: 'management', data: 'ping' })));
                     } catch {
                         this.subscribers.delete(controller);
                         if (intervalId) clearInterval(intervalId);
@@ -104,10 +104,10 @@ export class TenantSSEChannel extends DurableObject<CloudflareBindings> {
 
         return new Response(stream, {
             headers: {
-                "Transfer-Encoding": "chunked",
-                "Content-Type": "text/event-stream",
-                "Cache-Control": "no-cache",
-                Connection: "keep-alive",
+                'Transfer-Encoding': 'chunked',
+                'Content-Type': 'text/event-stream',
+                'Cache-Control': 'no-cache',
+                Connection: 'keep-alive',
             },
         });
     }
@@ -129,13 +129,13 @@ export class TenantSSEChannel extends DurableObject<CloudflareBindings> {
                 this.subscribers.delete(controller);
             }
         }
-        return Response.json({ success: "ok", subscribers: this.subscribers.size });
+        return Response.json({ success: 'ok', subscribers: this.subscribers.size });
     }
 
     private handleClose(): Response {
         const encoder = new TextEncoder();
         const closePayload = encoder.encode(
-            formatSSEMessage({ event: "management", data: "connection closed by server" }),
+            formatSSEMessage({ event: 'management', data: 'connection closed by server' }),
         );
         for (const controller of this.subscribers) {
             try {
@@ -150,6 +150,6 @@ export class TenantSSEChannel extends DurableObject<CloudflareBindings> {
             }
             this.subscribers.delete(controller);
         }
-        return Response.json({ success: "ok" });
+        return Response.json({ success: 'ok' });
     }
 }

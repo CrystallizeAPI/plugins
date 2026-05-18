@@ -1,6 +1,6 @@
-import { createSignatureVerifier } from "@crystallize/js-api-client";
-import type { TenantSSEChannelFactory } from "@/contracts/services/tenant-sse-channel";
-import type { WebhookReceiver } from "@/contracts/services/webhook-receiver";
+import { createSignatureVerifier } from '@crystallize/js-api-client';
+import type { TenantSSEChannelFactory } from '@/contracts/services/tenant-sse-channel';
+import type { WebhookReceiver } from '@/contracts/services/webhook-receiver';
 
 type Deps = {
     tenantSSEChannel: TenantSSEChannelFactory;
@@ -12,7 +12,7 @@ export const createWebhookReceiver =
         const signatureSecret = state?.signatureSecret ?? null;
         if (signatureSecret) {
             if (!input.signature) {
-                return { accepted: false, reason: "missing signature header" };
+                return { accepted: false, reason: 'missing signature header' };
             }
             const verify = createSignatureVerifier({ secret: signatureSecret });
             try {
@@ -22,7 +22,7 @@ export const createWebhookReceiver =
                     body: input.rawBody,
                 });
                 if (sig.tenantIdentifier !== input.expectedTenantIdentifier) {
-                    return { accepted: false, reason: "tenant mismatch" };
+                    return { accepted: false, reason: 'tenant mismatch' };
                 }
             } catch (err) {
                 return {
@@ -44,10 +44,10 @@ export const createWebhookReceiver =
         }
 
         const url = new URL(input.url);
-        const concern = url.searchParams.get("concern");
-        const action = url.searchParams.get("event");
+        const concern = url.searchParams.get('concern');
+        const action = url.searchParams.get('event');
 
         const channel = tenantSSEChannel(input.expectedTenantIdentifier);
-        await channel.push({ event: "action", concern, action, payload });
+        await channel.push({ event: 'action', concern, action, payload });
         return { accepted: true, pushed: true };
     };

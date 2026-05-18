@@ -1,14 +1,14 @@
-import { useRef, useState } from "hono/jsx";
-import { IslandRoot } from "virtual:islands/runtime";
-import { CrystalCharacter, type CrystalAction, type CrystalApi } from "../components/character/character";
+import { useRef, useState } from 'hono/jsx';
+import { IslandRoot } from 'virtual:islands/runtime';
+import { CrystalCharacter, type CrystalAction, type CrystalApi } from '../components/character/character';
 
-export const HomeIslandId = "home-island";
+export const HomeIslandId = 'home-island';
 
 const ACTIONS: { action: CrystalAction; label: string }[] = [
-    { action: "jump", label: "Jump" },
-    { action: "spin", label: "Spin" },
-    { action: "shine", label: "Shine" },
-    { action: "dance", label: "Dance" },
+    { action: 'jump', label: 'Jump' },
+    { action: 'spin', label: 'Spin' },
+    { action: 'shine', label: 'Shine' },
+    { action: 'dance', label: 'Dance' },
 ];
 
 const buildInstallUrl = (tenant: string) => `https://app.crystallize.com/@${tenant}/en/marketplace/crystallize-buddy`;
@@ -17,10 +17,10 @@ export function HomeIsland() {
     const apiRef = useRef<CrystalApi | null>(null);
     const trigger = (action: CrystalAction) => () => apiRef.current?.[action]();
 
-    const [tenant, setTenant] = useState("");
-    const cleanTenant = tenant.trim().replace(/^@+/, "");
+    const [tenant, setTenant] = useState('');
+    const cleanTenant = tenant.trim().replace(/^@+/, '');
     const enabled = cleanTenant.length > 0;
-    const href = enabled ? buildInstallUrl(cleanTenant) : "#";
+    const href = enabled ? buildInstallUrl(cleanTenant) : '#';
 
     return (
         <IslandRoot id={HomeIslandId} props={{}}>
@@ -70,7 +70,7 @@ export function HomeIsland() {
 
                     <a
                         href={href}
-                        target={enabled ? "_blank" : undefined}
+                        target={enabled ? '_blank' : undefined}
                         rel="noreferrer"
                         aria-disabled={!enabled}
                         tabIndex={enabled ? 0 : -1}
@@ -78,7 +78,7 @@ export function HomeIsland() {
                             if (!enabled) event.preventDefault();
                         }}
                         class={`inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-[15px] font-medium text-background shadow-sm transition ${
-                            enabled ? "hover:opacity-90 active:translate-y-px" : "pointer-events-none opacity-40"
+                            enabled ? 'hover:opacity-90 active:translate-y-px' : 'pointer-events-none opacity-40'
                         }`}
                     >
                         Install on your tenant
@@ -88,7 +88,7 @@ export function HomeIsland() {
                     </a>
 
                     <p class="min-h-4 text-[11px] text-muted-foreground/80 break-all">
-                        {enabled ? href : "Type your tenant identifier to enable install."}
+                        {enabled ? href : 'Type your tenant identifier to enable install.'}
                     </p>
                 </div>
             </section>

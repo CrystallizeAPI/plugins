@@ -1,5 +1,5 @@
-import { useState } from "hono/jsx";
-import { IslandRoot } from "virtual:islands/runtime";
+import { useState } from 'hono/jsx';
+import { IslandRoot } from 'virtual:islands/runtime';
 
 export type DoctorIslandProps = {
     fixUrl: string;
@@ -7,7 +7,7 @@ export type DoctorIslandProps = {
     missingCount: number;
 };
 
-export const DoctorIslandId = "doctor-island";
+export const DoctorIslandId = 'doctor-island';
 
 export function DoctorIsland(props: DoctorIslandProps) {
     return (
@@ -28,15 +28,15 @@ function DoctorIslandBody({ fixUrl, payload, missingCount }: DoctorIslandProps) 
         setCreated(null);
         try {
             const fd = new FormData();
-            fd.set("payload", payload);
-            const res = await fetch(fixUrl, { method: "POST", body: fd });
+            fd.set('payload', payload);
+            const res = await fetch(fixUrl, { method: 'POST', body: fd });
             if (!res.ok) {
                 throw new Error((await res.text()) || `Request failed (${res.status})`);
             }
             const data = (await res.json()) as { created: number };
             setCreated(data.created);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to create webhooks.");
+            setError(err instanceof Error ? err.message : 'Failed to create webhooks.');
         } finally {
             setBusy(false);
         }
@@ -45,7 +45,7 @@ function DoctorIslandBody({ fixUrl, payload, missingCount }: DoctorIslandProps) 
     if (created !== null) {
         return (
             <div class="flex items-start gap-2 rounded-lg border border-emerald-600/60 bg-emerald-500/15 px-3 py-2 text-sm text-emerald-800">
-                Created {created} webhook{created === 1 ? "" : "s"}. Reopen the Doctor to verify.
+                Created {created} webhook{created === 1 ? '' : 's'}. Reopen the Doctor to verify.
             </div>
         );
     }
@@ -64,7 +64,7 @@ function DoctorIslandBody({ fixUrl, payload, missingCount }: DoctorIslandProps) 
                     disabled={busy}
                     class="inline-flex items-center gap-2 rounded-lg bg-foreground px-3 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
-                    {busy ? "Creating…" : `Create ${missingCount} missing webhook${missingCount === 1 ? "" : "s"}`}
+                    {busy ? 'Creating…' : `Create ${missingCount} missing webhook${missingCount === 1 ? '' : 's'}`}
                 </button>
             </div>
         </div>

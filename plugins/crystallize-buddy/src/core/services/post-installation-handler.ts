@@ -1,9 +1,9 @@
-import type { CrystallizeClientFactory } from "@/contracts/services/crystallize-client";
+import type { CrystallizeClientFactory } from '@/contracts/services/crystallize-client';
 import type {
     PostInstallationHandler,
     PostInstallationHandlerInput,
-} from "@/contracts/services/post-installation-handler";
-import type { WebhookManager } from "@/contracts/services/webhook-manager";
+} from '@/contracts/services/post-installation-handler';
+import type { WebhookManager } from '@/contracts/services/webhook-manager';
 
 type Deps = {
     createCrystallizeClient: CrystallizeClientFactory;
@@ -16,11 +16,11 @@ export const createPostInstallationHandler =
         const { event, pluginIdentifier, pluginUrl } = input;
         const tenantIdentifier = input.decodedPayload.envelope?.tenantIdentifier;
         if (!tenantIdentifier) {
-            throw new Error("missing tenantIdentifier in decoded payload envelope");
+            throw new Error('missing tenantIdentifier in decoded payload envelope');
         }
         const crystallizeClient = createCrystallizeClient(input.decodedPayload);
 
-        if (event === "uninstall") {
+        if (event === 'uninstall') {
             const { removed } = await webhookManager.removeAll({
                 crystallizeClient,
                 pluginIdentifier,

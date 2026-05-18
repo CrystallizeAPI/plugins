@@ -1,8 +1,8 @@
-import { createMiddleware } from "hono/factory";
-import { AppContext } from "@/contracts/app-context";
-import { asValue } from "awilix";
-import { buildContainer } from "@/core/container";
-import { ExecutionContext } from "hono";
+import { createMiddleware } from 'hono/factory';
+import { AppContext } from '@/contracts/app-context';
+import { asValue } from 'awilix';
+import { buildContainer } from '@/core/container';
+import { ExecutionContext } from 'hono';
 
 export const servicesProvider = createMiddleware<AppContext>(async (c, next) => {
     let executionContext: ExecutionContext | undefined;
@@ -24,7 +24,7 @@ export const servicesProvider = createMiddleware<AppContext>(async (c, next) => 
         defer: asValue(defer),
     });
 
-    c.set("services", {
+    c.set('services', {
         payloadDecrypter: scoped.cradle.payloadDecrypter,
         tenantSSEChannel: scoped.cradle.tenantSSEChannel,
         webhookReceiver: scoped.cradle.webhookReceiver,

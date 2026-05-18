@@ -1,6 +1,6 @@
-import type { DecryptedPluginPayload } from "@crystallize/js-api-client";
+import type { DecryptedPluginPayload } from '@crystallize/js-api-client';
 
-export type PostInstallationEvent = "install" | "reinstall" | "uninstall";
+export type PostInstallationEvent = 'install' | 'reinstall' | 'uninstall';
 
 export type PostInstallationHandlerInput = {
     decodedPayload: DecryptedPluginPayload<unknown>;

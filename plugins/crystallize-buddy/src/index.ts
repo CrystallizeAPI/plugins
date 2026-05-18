@@ -1,6 +1,6 @@
-import { createApp } from "./app";
+import { createApp } from './app';
 
-export { TenantSSEChannel } from "./core/durable-objects/tenant-sse-channel";
+export { TenantSSEChannel } from './core/durable-objects/tenant-sse-channel';
 
 const app = createApp();
 

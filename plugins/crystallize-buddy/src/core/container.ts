@@ -1,11 +1,11 @@
-import { createPluginPayloadDecrypter } from "@crystallize/js-api-client";
-import { asFunction, createContainer, InjectionMode } from "awilix";
-import type { Services } from "@/contracts/services";
-import { createPostInstallationHandler } from "./services/post-installation-handler";
-import { createTenantSSEChannelFactory } from "./services/tenant-sse-channel";
-import { createWebhookReceiver } from "./services/webhook-receiver";
-import { createWebhookManager } from "./services/webhook-manager";
-import { createCrystallizeClient } from "./services/crystallize-client-builder";
+import { createPluginPayloadDecrypter } from '@crystallize/js-api-client';
+import { asFunction, createContainer, InjectionMode } from 'awilix';
+import type { Services } from '@/contracts/services';
+import { createPostInstallationHandler } from './services/post-installation-handler';
+import { createTenantSSEChannelFactory } from './services/tenant-sse-channel';
+import { createWebhookReceiver } from './services/webhook-receiver';
+import { createWebhookManager } from './services/webhook-manager';
+import { createCrystallizeClient } from './services/crystallize-client-builder';
 
 const build = (env: CloudflareBindings) => {
     return createContainer<Services>({
@@ -17,7 +17,7 @@ const build = (env: CloudflareBindings) => {
                 privateJwk: JSON.parse(env.PLUGIN_PRIVATE_JWK),
                 verify: {
                     audience: env.PLUGIN_IDENTIFIER,
-                    verifyBackendToken: env.ENVIRONMENT !== "development",
+                    verifyBackendToken: env.ENVIRONMENT !== 'development',
                 },
             }))
             .singleton(),

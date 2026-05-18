@@ -1,4 +1,4 @@
-import type { DecryptedPluginPayload } from "@crystallize/js-api-client";
+import type { DecryptedPluginPayload } from '@crystallize/js-api-client';
 
 function page(title: string, body: string): string {
     return `<!DOCTYPE html>

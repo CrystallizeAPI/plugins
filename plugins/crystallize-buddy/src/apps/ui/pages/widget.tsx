@@ -1,18 +1,18 @@
-import { useRequestContext } from "hono/jsx-renderer";
-import type { DecodedPayloadAppContext } from "@/contracts/app-context";
-import { BuddyIsland } from "@/ui/islands/buddy-island";
-import { palettes, type PaletteName } from "@/ui/components/character/palettes";
-import { PluginLayout } from "../layouts/plugin-layout";
+import { useRequestContext } from 'hono/jsx-renderer';
+import type { DecodedPayloadAppContext } from '@/contracts/app-context';
+import { BuddyIsland } from '@/ui/islands/buddy-island';
+import { palettes, type PaletteName } from '@/ui/components/character/palettes';
+import { PluginLayout } from '../layouts/plugin-layout';
 
-const isPaletteName = (value: unknown): value is PaletteName => typeof value === "string" && value in palettes;
+const isPaletteName = (value: unknown): value is PaletteName => typeof value === 'string' && value in palettes;
 
 export async function Widget() {
     const c = useRequestContext<DecodedPayloadAppContext>();
-    const tenantIdentifier = c.get("tenantIdentifier");
+    const tenantIdentifier = c.get('tenantIdentifier');
     const subscribeUrl = `/${tenantIdentifier}/api/sse/subscribe`;
-    const configuration = (c.get("decodedPayload").envelope?.configuration ?? {}) as Record<string, unknown>;
-    const palette: PaletteName = isPaletteName(configuration.color) ? configuration.color : "orange";
-    const crystallizeClient = c.get("crystallizeClient");
+    const configuration = (c.get('decodedPayload').envelope?.configuration ?? {}) as Record<string, unknown>;
+    const palette: PaletteName = isPaletteName(configuration.color) ? configuration.color : 'orange';
+    const crystallizeClient = c.get('crystallizeClient');
     const bCounts = await crystallizeClient.nextPimApi<{
         complete: { totalCount: number };
         error: { totalCount: number };
@@ -26,16 +26,16 @@ export async function Widget() {
         pending: bCounts.pending.totalCount ?? 0,
         started: bCounts.started.totalCount ?? 0,
     };
-    console.debug("[widget] initial bulk task counts:", bulkTaskCounts);
+    console.debug('[widget] initial bulk task counts:', bulkTaskCounts);
     return (
-        <PluginLayout bare tenantIdentifier={tenantIdentifier} payload={c.get("rawPayload")}>
+        <PluginLayout bare tenantIdentifier={tenantIdentifier} payload={c.get('rawPayload')}>
             <div className="flex min-h-0 flex-1 flex-col gap-3">
                 <BuddyIsland
                     palette={palette}
                     subscribeUrl={subscribeUrl}
                     bulkTaskCounts={bulkTaskCounts}
                     tenantIdentifier={tenantIdentifier}
-                    payload={c.get("rawPayload")}
+                    payload={c.get('rawPayload')}
                 />
             </div>
         </PluginLayout>

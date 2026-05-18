@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@plugin '@tailwindcss/typography';
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-c-cyan: rgb(var(--c-color-cyan-500-400));
+    --color-c-pink: rgb(var(--c-color-pink-500-400));
+    --color-c-gray: rgb(var(--c-color-gray-500-400));
+    --color-c-purple: rgb(var(--c-color-purple-500-400));
+    --color-c-green: rgb(var(--c-color-green-500-400));
+    --color-c-orange: rgb(var(--c-color-orange-500-400));
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+
+    --font-sans:
+        Roboto, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:root {
+    --radius: 0.25rem;
+
+    /* Crystallize raw palette (RGB triplets, space-separated for /<alpha> support) */
+    --c-color-cyan-50: 238 253 252;
+    --c-color-cyan-100: 191 246 248;
+    --c-color-cyan-200: 172 241 245;
+    --c-color-cyan-300: 115 229 237;
+    --c-color-cyan-400: 51 208 221;
+    --c-color-cyan-500: 23 179 195;
+    --c-color-cyan-600: 22 144 164;
+    --c-color-cyan-700: 25 115 133;
+    --c-color-cyan-800: 29 94 109;
+    --c-color-cyan-900: 28 78 93;
+
+    --c-color-pink-50: 254 241 249;
+    --c-color-pink-100: 254 229 244;
+    --c-color-pink-200: 255 204 236;
+    --c-color-pink-300: 255 161 219;
+    --c-color-pink-400: 255 102 192;
+    --c-color-pink-500: 251 57 164;
+    --c-color-pink-600: 235 23 130;
+    --c-color-pink-700: 205 9 102;
+    --c-color-pink-800: 169 11 84;
+    --c-color-pink-900: 141 14 73;
+
+    --c-color-gray-50: 245 245 246;
+    --c-color-gray-100: 228 229 233;
+    --c-color-gray-200: 204 207 213;
+    --c-color-gray-300: 169 174 183;
+    --c-color-gray-400: 126 133 146;
+    --c-color-gray-500: 98 103 120;
+    --c-color-gray-600: 84 88 102;
+    --c-color-gray-700: 76 79 90;
+    --c-color-gray-800: 64 66 74;
+    --c-color-gray-900: 57 58 64;
+
+    --c-color-purple-50: 247 246 249;
+    --c-color-purple-100: 238 236 242;
+    --c-color-purple-200: 216 213 226;
+    --c-color-purple-300: 182 176 201;
+    --c-color-purple-400: 142 133 171;
+    --c-color-purple-500: 112 102 145;
+    --c-color-purple-600: 91 81 120;
+    --c-color-purple-700: 75 66 98;
+    --c-color-purple-800: 64 57 83;
+    --c-color-purple-900: 57 51 71;
+
+    --c-color-green-50: 243 248 248;
+    --c-color-green-100: 223 235 238;
+    --c-color-green-200: 195 218 222;
+    --c-color-green-300: 154 191 198;
+    --c-color-green-400: 105 156 167;
+    --c-color-green-500: 82 134 147;
+    --c-color-green-600: 67 106 119;
+    --c-color-green-700: 59 88 99;
+    --c-color-green-800: 55 75 83;
+    --c-color-green-900: 49 65 72;
+
+    --c-color-orange-50: 255 249 235;
+    --c-color-orange-100: 255 237 198;
+    --c-color-orange-200: 255 222 153;
+    --c-color-orange-300: 255 191 74;
+    --c-color-orange-400: 255 165 32;
+    --c-color-orange-500: 249 129 7;
+    --c-color-orange-600: 221 92 2;
+    --c-color-orange-700: 183 61 6;
+    --c-color-orange-800: 148 46 12;
+    --c-color-orange-900: 122 39 13;
+
+    /* Saturated status palette */
+    --c-color-s-red-500: 245 62 62;
+    --c-color-s-orange-500: 252 117 19;
+    --c-color-s-yellow-500: 238 207 4;
+    --c-color-s-green-500: 44 219 12;
+
+    /* Dual-mode tokens — flip in .dark */
+    --c-color-cyan-50-900: var(--c-color-cyan-50);
+    --c-color-cyan-100-800: var(--c-color-cyan-100);
+    --c-color-cyan-200-700: var(--c-color-cyan-200);
+    --c-color-cyan-300-600: var(--c-color-cyan-300);
+    --c-color-cyan-500-400: var(--c-color-cyan-500);
+    --c-color-cyan-600-300: var(--c-color-cyan-600);
+    --c-color-cyan-700-200: var(--c-color-cyan-700);
+
+    --c-color-pink-50-900: var(--c-color-pink-50);
+    --c-color-pink-100-800: var(--c-color-pink-100);
+    --c-color-pink-300-600: var(--c-color-pink-300);
+    --c-color-pink-500-400: var(--c-color-pink-500);
+    --c-color-pink-600-300: var(--c-color-pink-600);
+
+    --c-color-gray-50-900: var(--c-color-gray-50);
+    --c-color-gray-100-800: var(--c-color-gray-100);
+    --c-color-gray-200-700: var(--c-color-gray-200);
+    --c-color-gray-300-600: var(--c-color-gray-300);
+    --c-color-gray-500-400: var(--c-color-gray-500);
+    --c-color-gray-600-300: var(--c-color-gray-600);
+    --c-color-gray-700-200: var(--c-color-gray-700);
+    --c-color-gray-900-50: var(--c-color-gray-900);
+
+    --c-color-purple-50-900: var(--c-color-purple-50);
+    --c-color-purple-100-800: var(--c-color-purple-100);
+    --c-color-purple-200-700: var(--c-color-purple-200);
+    --c-color-purple-500-400: var(--c-color-purple-500);
+
+    --c-color-green-500-400: var(--c-color-green-500);
+    --c-color-orange-500-400: var(--c-color-orange-500);
+
+    /* Surface that "elevates" above the page (white on light, deep purple on dark) */
+    --c-color-elevate: 255 255 255;
+
+    /* Crystallize signature shadow */
+    --shadow-elevate: 0 2px 4px rgba(130, 138, 144, 0.15);
+
+    /* ShadCN semantic tokens mapped onto Crystallize palette */
+    --background: rgb(var(--c-color-elevate));
+    --foreground: rgb(var(--c-color-gray-700-200));
+
+    --card: rgb(var(--c-color-elevate));
+    --card-foreground: rgb(var(--c-color-gray-700-200));
+
+    --popover: rgb(var(--c-color-elevate));
+    --popover-foreground: rgb(var(--c-color-gray-700-200));
+
+    /* Primary = cyan action (Crystallize's c-btn-action lineage, solidified) */
+    --primary: rgb(var(--c-color-cyan-500-400));
+    --primary-foreground: 255 255 255;
+
+    /* Secondary = subtle purple chrome (Crystallize's default c-btn) */
+    --secondary: rgb(var(--c-color-purple-50-900));
+    --secondary-foreground: rgb(var(--c-color-gray-700-200));
+
+    --muted: rgb(var(--c-color-gray-50-900));
+    --muted-foreground: rgb(var(--c-color-gray-500-400));
+
+    --accent: rgb(var(--c-color-cyan-100-800));
+    --accent-foreground: rgb(var(--c-color-cyan-700-200));
+
+    --destructive: rgb(var(--c-color-pink-600-300));
+    --destructive-foreground: 255 255 255;
+
+    --border: rgb(var(--c-color-purple-200-700));
+    --input: rgb(var(--c-color-purple-200-700));
+    --ring: rgb(var(--c-color-cyan-500-400));
+}
+
+.dark {
+    --c-color-cyan-50-900: var(--c-color-cyan-900);
+    --c-color-cyan-100-800: var(--c-color-cyan-800);
+    --c-color-cyan-200-700: var(--c-color-cyan-700);
+    --c-color-cyan-300-600: var(--c-color-cyan-600);
+    --c-color-cyan-500-400: var(--c-color-cyan-400);
+    --c-color-cyan-600-300: var(--c-color-cyan-300);
+    --c-color-cyan-700-200: var(--c-color-cyan-200);
+
+    --c-color-pink-50-900: var(--c-color-pink-900);
+    --c-color-pink-100-800: var(--c-color-pink-800);
+    --c-color-pink-300-600: var(--c-color-pink-600);
+    --c-color-pink-500-400: var(--c-color-pink-400);
+    --c-color-pink-600-300: var(--c-color-pink-300);
+
+    --c-color-gray-50-900: var(--c-color-gray-900);
+    --c-color-gray-100-800: var(--c-color-gray-800);
+    --c-color-gray-200-700: var(--c-color-gray-700);
+    --c-color-gray-300-600: var(--c-color-gray-600);
+    --c-color-gray-500-400: var(--c-color-gray-400);
+    --c-color-gray-600-300: var(--c-color-gray-300);
+    --c-color-gray-700-200: var(--c-color-gray-200);
+    --c-color-gray-900-50: var(--c-color-gray-50);
+
+    --c-color-purple-50-900: var(--c-color-purple-900);
+    --c-color-purple-100-800: var(--c-color-purple-800);
+    --c-color-purple-200-700: var(--c-color-purple-700);
+    --c-color-purple-500-400: var(--c-color-purple-400);
+
+    --c-color-green-500-400: var(--c-color-green-400);
+    --c-color-orange-500-400: var(--c-color-orange-400);
+
+    --c-color-elevate: var(--c-color-purple-900);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    html,
+    body {
+        font-family: var(--font-sans);
+    }
+
+    html,
+    body {
+        @apply bg-transparent text-foreground;
+    }
+
+    /* @tailwindcss/typography — wire prose tokens to Crystallize palette */
+    .prose {
+        --tw-prose-body: rgb(var(--c-color-gray-700-200));
+        --tw-prose-headings: rgb(var(--c-color-gray-900-50));
+        --tw-prose-lead: rgb(var(--c-color-gray-600-300));
+        --tw-prose-links: rgb(var(--c-color-cyan-600-300));
+        --tw-prose-bold: rgb(var(--c-color-gray-900-50));
+        --tw-prose-counters: rgb(var(--c-color-gray-500-400));
+        --tw-prose-bullets: rgb(var(--c-color-gray-300-600));
+        --tw-prose-hr: rgb(var(--c-color-purple-200-700));
+        --tw-prose-quotes: rgb(var(--c-color-gray-900-50));
+        --tw-prose-quote-borders: rgb(var(--c-color-purple-200-700));
+        --tw-prose-captions: rgb(var(--c-color-gray-500-400));
+        --tw-prose-code: rgb(var(--c-color-gray-900-50));
+        --tw-prose-pre-code: rgb(var(--c-color-gray-200-700));
+        --tw-prose-pre-bg: rgb(var(--c-color-gray-900-50));
+        --tw-prose-th-borders: rgb(var(--c-color-purple-200-700));
+        --tw-prose-td-borders: rgb(var(--c-color-purple-100-800));
+
+        --tw-prose-invert-body: rgb(var(--c-color-gray-200));
+        --tw-prose-invert-headings: 255 255 255;
+        --tw-prose-invert-lead: rgb(var(--c-color-gray-300));
+        --tw-prose-invert-links: rgb(var(--c-color-cyan-300));
+        --tw-prose-invert-bold: 255 255 255;
+        --tw-prose-invert-counters: rgb(var(--c-color-gray-400));
+        --tw-prose-invert-bullets: rgb(var(--c-color-gray-600));
+        --tw-prose-invert-hr: rgb(var(--c-color-purple-700));
+        --tw-prose-invert-quotes: rgb(var(--c-color-gray-100));
+        --tw-prose-invert-quote-borders: rgb(var(--c-color-purple-700));
+        --tw-prose-invert-captions: rgb(var(--c-color-gray-400));
+        --tw-prose-invert-code: 255 255 255;
+        --tw-prose-invert-pre-code: rgb(var(--c-color-gray-300));
+        --tw-prose-invert-pre-bg: rgb(0 0 0 / 0.5);
+        --tw-prose-invert-th-borders: rgb(var(--c-color-purple-700));
+        --tw-prose-invert-td-borders: rgb(var(--c-color-purple-800));
+    }
+}

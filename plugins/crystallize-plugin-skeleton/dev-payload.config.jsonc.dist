@@ -1,0 +1,30 @@
+// Sample dev-payload config. Copy this file to `dev-payload.config.jsonc` (gitignored) and edit.
+// Each route mints a fake plugin payload when the dev server gets a matching GET.
+// Tokens like `:tenant` capture path segments — `:tenant` is required (used as tenantIdentifier).
+//
+// Per-route fields:
+//   pathPattern  required. URL pattern with `:name` captures. Must include `:tenant`.
+//   envelope     optional. Partial overrides merged into the locally-minted envelope:
+//                  configuration   tenant-specific config the installer set
+//                  entityContext   e.g. { orderId: 42 } for entity-scoped placements
+//                  event           "install" | "reinstall" | "uninstall" — only for post-install simulation
+//   secrets      optional. Plaintext values to JWE-encrypt with public.jwk.json.
+//                They land in `decoded.secrets` on the worker side, the same way prod delivers them.
+{
+  "routes": [
+    // Plain entrypoint — no entity context, default config.
+    {
+      "pathPattern": "/:tenant/widget",
+    },
+
+    // Simulate the post-install webhook. Hit this URL once after editing config
+    // to exercise the install side-effects.
+    {
+      "pathPattern": "/:tenant/api/post-installation",
+      "envelope": {
+        "event": "install",
+        "configuration": {},
+      },
+    },
+  ],
+}

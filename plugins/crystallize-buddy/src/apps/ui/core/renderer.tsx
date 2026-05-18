@@ -1,9 +1,9 @@
-import { jsxRenderer } from "hono/jsx-renderer";
-import { Script, ViteClient } from "vite-ssr-components/hono";
-import style from "../../../ui/styles/global.css?inline";
+import { jsxRenderer } from 'hono/jsx-renderer';
+import { Script, ViteClient } from 'vite-ssr-components/hono';
+import style from '../../../ui/styles/global.css?inline';
 export const renderer = jsxRenderer(({ children }) => {
     return (
-        <html lang={"en"}>
+        <html lang={'en'}>
             <head>
                 <ViteClient />
                 <Script src="/src/apps/ui/client.tsx" defer />

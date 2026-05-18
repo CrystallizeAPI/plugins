@@ -1,8 +1,8 @@
-import type { ClientInterface } from "@crystallize/js-api-client";
-import type { ManagedConcern, ManagedEvent, WebhookCheck, WebhookManager } from "@/contracts/services/webhook-manager";
+import type { ClientInterface } from '@crystallize/js-api-client';
+import type { ManagedConcern, ManagedEvent, WebhookCheck, WebhookManager } from '@/contracts/services/webhook-manager';
 
-const MANAGED_WEBHOOK_CONCERNS = ["orders", "items", "customers"] as const satisfies readonly ManagedConcern[];
-const MANAGED_WEBHOOK_EVENTS = ["create", "update", "delete"] as const satisfies readonly ManagedEvent[];
+const MANAGED_WEBHOOK_CONCERNS = ['orders', 'items', 'customers'] as const satisfies readonly ManagedConcern[];
+const MANAGED_WEBHOOK_EVENTS = ['create', 'update', 'delete'] as const satisfies readonly ManagedEvent[];
 
 type ExistingWebhook = {
     id: string;
@@ -12,7 +12,7 @@ type ExistingWebhook = {
 };
 
 const buildWebhookBaseUrl = (pluginUrl: string, tenantIdentifier: string): string => {
-    const base = pluginUrl.replace(/\/+$/, "");
+    const base = pluginUrl.replace(/\/+$/, '');
     return `${base}/${tenantIdentifier}/api/webhook/receive`;
 };
 
@@ -44,7 +44,7 @@ const fetchManagedWebhooks = async (client: ClientInterface, pluginIdentifier: s
         if (!after) break;
     }
     return all.filter((node) =>
-        node.headers?.some((header) => header.name === "x-plugin-identifier" && header.value === pluginIdentifier),
+        node.headers?.some((header) => header.name === 'x-plugin-identifier' && header.value === pluginIdentifier),
     );
 };
 
@@ -85,10 +85,10 @@ export const createWebhookManager = (): WebhookManager => ({
                     input: {
                         concern,
                         event,
-                        graphqlQuery: "",
-                        graphqlQueryTarget: "current",
-                        headers: [{ name: "x-plugin-identifier", value: pluginIdentifier }],
-                        method: "POST",
+                        graphqlQuery: '',
+                        graphqlQueryTarget: 'current',
+                        headers: [{ name: 'x-plugin-identifier', value: pluginIdentifier }],
+                        method: 'POST',
                         name: `Crystallize Buddy - ${concern}/${event}`,
                         preserveDefaultPayload: true,
                         url: buildWebhookUrl(pluginUrl, tenantIdentifier, concern, event),

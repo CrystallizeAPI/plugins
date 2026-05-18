@@ -9,7 +9,7 @@ export type TenantSSEChannel = {
     push(payload: { event: string; [key: string]: unknown }): Promise<Response>;
     close(): Promise<Response>;
     saveInstallationState(
-        state: Pick<TenantInstallationState, "configuration" | "signatureSecret">,
+        state: Pick<TenantInstallationState, 'configuration' | 'signatureSecret'>,
     ): Promise<TenantInstallationState>;
     getInstallationState(): Promise<TenantInstallationState | null>;
 };

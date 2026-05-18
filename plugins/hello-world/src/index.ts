@@ -10,20 +10,20 @@ const decrypter = createPluginPayloadDecrypter({
     },
 });
 
-const getDecodedPayload = async (c:Context) => {
+const getDecodedPayload = async (c: Context) => {
     const body = await c.req.parseBody();
     if (typeof body !== 'object' || body === null || typeof body.payload !== 'string') {
         throw new Error('Invalid body');
     }
     const payload = body.payload;
     return await decrypter(payload);
-}
+};
 
 const app = new Hono();
 app.post('/:tenantIdentifier/post-install', async (c) => {
     const tenantIdentifier = c.req.param('tenantIdentifier');
     try {
-        const decoded = await getDecodedPayload(c)
+        const decoded = await getDecodedPayload(c);
         if (decoded.envelope?.tenantIdentifier !== tenantIdentifier) {
             return c.text('tenant mismatch', 403);
         }
@@ -37,7 +37,7 @@ app.post('/:tenantIdentifier/post-install', async (c) => {
 app.post('/:tenantIdentifier/endpoint', async (c) => {
     const tenantIdentifier = c.req.param('tenantIdentifier');
     try {
-        const decoded = await getDecodedPayload(c)
+        const decoded = await getDecodedPayload(c);
         if (decoded.envelope?.tenantIdentifier !== tenantIdentifier) {
             return c.text('tenant mismatch', 403);
         }

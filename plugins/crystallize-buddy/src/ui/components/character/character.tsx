@@ -1,10 +1,10 @@
-import { useRef, useEffect, useCallback, type RefObject } from "hono/jsx";
-import { cn } from "@/ui/lib/utils";
-import { AmbientSparkles } from "./ambient-sparkles";
-import "./styles/character.css";
-import { palettes, type PaletteName } from "./palettes";
+import { useRef, useEffect, useCallback, type RefObject } from 'hono/jsx';
+import { cn } from '@/ui/lib/utils';
+import { AmbientSparkles } from './ambient-sparkles';
+import './styles/character.css';
+import { palettes, type PaletteName } from './palettes';
 
-export type CrystalAction = "jump" | "spin" | "shine" | "dance";
+export type CrystalAction = 'jump' | 'spin' | 'shine' | 'dance';
 
 export type CrystalApi = {
     jump: () => void;
@@ -39,7 +39,7 @@ type CrystalCharacterProps = {
 };
 
 export function CrystalCharacter({
-    palette = "orange",
+    palette = 'orange',
     showFace = true,
     size = 240,
     showGlow = true,
@@ -65,13 +65,13 @@ export function CrystalCharacter({
 
     const resolved = palettes[palette];
     const paletteVars: Record<string, string> = {
-        "--c-1": resolved.c1,
-        "--c-2": resolved.c2,
-        "--c-3": resolved.c3,
-        "--c-4": resolved.c4,
-        "--c-eye": resolved.eye,
-        "--c-cheek": resolved.cheek,
-        "--c-glow": resolved.glow,
+        '--c-1': resolved.c1,
+        '--c-2': resolved.c2,
+        '--c-3': resolved.c3,
+        '--c-4': resolved.c4,
+        '--c-eye': resolved.eye,
+        '--c-cheek': resolved.cheek,
+        '--c-glow': resolved.glow,
     };
 
     useEffect(() => {
@@ -86,13 +86,13 @@ export function CrystalCharacter({
             const angle = Math.atan2(dy, dx);
             const ox = Math.cos(angle) * EYE_MAX_OFFSET * norm;
             const oy = Math.sin(angle) * EYE_MAX_OFFSET * norm;
-            eyeLPupil.current?.setAttribute("cx", String(EYE_ORIGINS.L.x + ox));
-            eyeLPupil.current?.setAttribute("cy", String(EYE_ORIGINS.L.y + oy));
-            eyeRPupil.current?.setAttribute("cx", String(EYE_ORIGINS.R.x + ox));
-            eyeRPupil.current?.setAttribute("cy", String(EYE_ORIGINS.R.y + oy));
+            eyeLPupil.current?.setAttribute('cx', String(EYE_ORIGINS.L.x + ox));
+            eyeLPupil.current?.setAttribute('cy', String(EYE_ORIGINS.L.y + oy));
+            eyeRPupil.current?.setAttribute('cx', String(EYE_ORIGINS.R.x + ox));
+            eyeRPupil.current?.setAttribute('cy', String(EYE_ORIGINS.R.y + oy));
         };
-        document.addEventListener("mousemove", onMove);
-        return () => document.removeEventListener("mousemove", onMove);
+        document.addEventListener('mousemove', onMove);
+        return () => document.removeEventListener('mousemove', onMove);
     }, [trackCursor]);
 
     useEffect(() => {
@@ -103,14 +103,14 @@ export function CrystalCharacter({
         const fireBlink = () => {
             const body = bodyRef.current;
             if (!body) return;
-            body.classList.add("crystal-blink");
-            subTimers.push(setTimeout(() => body.classList.remove("crystal-blink"), 200));
+            body.classList.add('crystal-blink');
+            subTimers.push(setTimeout(() => body.classList.remove('crystal-blink'), 200));
             if (Math.random() < 0.2) {
                 subTimers.push(
                     setTimeout(() => {
                         if (cancelled) return;
-                        body.classList.add("crystal-blink");
-                        subTimers.push(setTimeout(() => body.classList.remove("crystal-blink"), 200));
+                        body.classList.add('crystal-blink');
+                        subTimers.push(setTimeout(() => body.classList.remove('crystal-blink'), 200));
                     }, 300),
                 );
             }
@@ -140,17 +140,17 @@ export function CrystalCharacter({
         const cx = rect.left - cRect.left + rect.width / 2;
         const cy = rect.top - cRect.top + rect.height / 2;
         for (let i = 0; i < n; i++) {
-            const s = document.createElement("div");
-            s.className = "crystal-sparkle";
+            const s = document.createElement('div');
+            s.className = 'crystal-sparkle';
             s.innerHTML = SPARKLE_SVG;
             const angle = (i / n) * Math.PI * 2 + Math.random() * 0.5;
             const dist = 80 + Math.random() * 100;
-            s.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
-            s.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
+            s.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+            s.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
             s.style.left = `${cx - 7}px`;
             s.style.top = `${cy - 7}px`;
             container.appendChild(s);
-            requestAnimationFrame(() => s.classList.add("crystal-go"));
+            requestAnimationFrame(() => s.classList.add('crystal-go'));
             setTimeout(() => s.remove(), 1100);
         }
     }, []);
@@ -177,33 +177,33 @@ export function CrystalCharacter({
         const body = bodyRef.current;
         if (ground) {
             setTimeout(() => {
-                ground.style.transform = "translateX(-50%) scale(0.5)";
-                ground.style.opacity = "0.5";
+                ground.style.transform = 'translateX(-50%) scale(0.5)';
+                ground.style.opacity = '0.5';
             }, 100);
             setTimeout(() => {
-                ground.style.transform = "translateX(-50%) scale(1)";
-                ground.style.opacity = "1";
+                ground.style.transform = 'translateX(-50%) scale(1)';
+                ground.style.opacity = '1';
             }, 700);
         }
-        await playOneShot("crystal-jumping", 950);
+        await playOneShot('crystal-jumping', 950);
         if (body) {
-            body.classList.add("crystal-squish");
-            setTimeout(() => body.classList.remove("crystal-squish"), 400);
+            body.classList.add('crystal-squish');
+            setTimeout(() => body.classList.remove('crystal-squish'), 400);
         }
     }, [playOneShot]);
 
     const executeSpin = useCallback(async () => {
         spawnSparkles(14);
-        await playOneShot("crystal-spinning", 1000);
+        await playOneShot('crystal-spinning', 1000);
     }, [playOneShot, spawnSparkles]);
 
     const executeShine = useCallback(async () => {
         spawnSparkles(20);
-        await playOneShot("crystal-shining", 950);
+        await playOneShot('crystal-shining', 950);
     }, [playOneShot, spawnSparkles]);
 
     const executeDance = useCallback(async () => {
-        await playOneShot("crystal-dancing", 2100);
+        await playOneShot('crystal-dancing', 2100);
     }, [playOneShot]);
 
     const drainQueue = useCallback(async () => {
@@ -213,9 +213,9 @@ export function CrystalCharacter({
         while (queue.length > 0) {
             const action = queue.shift() as CrystalAction;
             onAction?.(action);
-            if (action === "jump") await executeJump();
-            else if (action === "spin") await executeSpin();
-            else if (action === "shine") await executeShine();
+            if (action === 'jump') await executeJump();
+            else if (action === 'spin') await executeSpin();
+            else if (action === 'shine') await executeShine();
             else await executeDance();
         }
         runningRef.current = false;
@@ -230,10 +230,10 @@ export function CrystalCharacter({
         [drainQueue],
     );
 
-    const jump = useCallback(() => enqueue("jump"), [enqueue]);
-    const spin = useCallback(() => enqueue("spin"), [enqueue]);
-    const shine = useCallback(() => enqueue("shine"), [enqueue]);
-    const dance = useCallback(() => enqueue("dance"), [enqueue]);
+    const jump = useCallback(() => enqueue('jump'), [enqueue]);
+    const spin = useCallback(() => enqueue('spin'), [enqueue]);
+    const shine = useCallback(() => enqueue('shine'), [enqueue]);
+    const dance = useCallback(() => enqueue('dance'), [enqueue]);
 
     useEffect(() => {
         if (!apiRef) return;
@@ -253,7 +253,7 @@ export function CrystalCharacter({
     return (
         <div
             ref={containerRef as RefObject<HTMLDivElement>}
-            class={cn("relative inline-block", className)}
+            class={cn('relative inline-block', className)}
             style={containerStyle}
         >
             {showGlow && <div class="crystal-glow" />}

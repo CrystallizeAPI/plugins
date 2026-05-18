@@ -1,16 +1,16 @@
-import { useRequestContext } from "hono/jsx-renderer";
-import type { DecodedPayloadAppContext } from "@/contracts/app-context";
-import { DoctorIsland } from "@/ui/islands/doctor-island";
-import { PluginLink } from "@/ui/components/plugin-link";
-import { PluginLayout } from "../layouts/plugin-layout";
+import { useRequestContext } from 'hono/jsx-renderer';
+import type { DecodedPayloadAppContext } from '@/contracts/app-context';
+import { DoctorIsland } from '@/ui/islands/doctor-island';
+import { PluginLink } from '@/ui/components/plugin-link';
+import { PluginLayout } from '../layouts/plugin-layout';
 
 export async function Doctor() {
     const c = useRequestContext<DecodedPayloadAppContext>();
-    const tenantIdentifier = c.get("tenantIdentifier");
-    const services = c.get("services");
+    const tenantIdentifier = c.get('tenantIdentifier');
+    const services = c.get('services');
 
     const inspection = await services.webhookManager.inspect({
-        crystallizeClient: c.get("crystallizeClient"),
+        crystallizeClient: c.get('crystallizeClient'),
         pluginIdentifier: c.env.PLUGIN_IDENTIFIER,
         pluginUrl: c.env.PLUGIN_URL,
         tenantIdentifier,
@@ -23,11 +23,11 @@ export async function Doctor() {
     return (
         <PluginLayout
             tenantIdentifier={tenantIdentifier}
-            payload={c.get("rawPayload")}
+            payload={c.get('rawPayload')}
             headerActions={
                 <PluginLink
                     action={`/${tenantIdentifier}/widget`}
-                    payload={c.get("rawPayload")}
+                    payload={c.get('rawPayload')}
                     demoteFromDialog
                     loadingLabel="Closing…"
                     class="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors bg-transparent border-0 p-0 cursor-pointer"
@@ -69,7 +69,7 @@ export async function Doctor() {
                         <WarningIcon class="size-4 mt-0.5 shrink-0" />
                         <div class="flex flex-col gap-0.5">
                             <span class="text-sm font-medium">
-                                {missingCount} webhook{missingCount === 1 ? "" : "s"} missing
+                                {missingCount} webhook{missingCount === 1 ? '' : 's'} missing
                             </span>
                             <span class="text-xs opacity-80">
                                 Crystallize Buddy needs every managed webhook to keep up with tenant changes.
@@ -107,7 +107,7 @@ export async function Doctor() {
                 {!allOk && (
                     <DoctorIsland
                         fixUrl={`/${tenantIdentifier}/api/doctor/webhooks`}
-                        payload={c.get("rawPayload")}
+                        payload={c.get('rawPayload')}
                         missingCount={missingCount}
                     />
                 )}
