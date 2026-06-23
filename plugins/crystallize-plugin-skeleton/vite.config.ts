@@ -30,6 +30,18 @@ export default defineConfig(({ mode }) => {
     }
 
     return {
+        // Bind the dev server to a predictable, controllable address so any
+        // tunnel / reverse-proxy (portless, ngrok, cloudflared, …) can point at
+        // it. `port` honors the PORT env var — portless injects it; otherwise
+        // it defaults to 5173 (e.g. `ngrok http 5173`). Bind IPv4 loopback
+        // (proxies dial 127.0.0.1, and Vite's default would otherwise bind IPv6
+        // [::1] here) and use strictPort so a busy port fails loudly instead of
+        // silently drifting to another port and leaving the proxy route dead.
+        server: {
+            host: '127.0.0.1',
+            port: Number(process.env.PORT) || 5173,
+            strictPort: true,
+        },
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, './src'),
